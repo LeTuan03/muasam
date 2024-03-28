@@ -22,8 +22,6 @@ export default function DialogChangePass(props) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const data = await updateProfile(item);
-            toast.success("Cập nhật thông tin cá nhân thành công")
             if (updatedImage) {
                 let formData = new FormData();
                 formData.append("idProfile", item?.idprofile);
@@ -31,6 +29,9 @@ export default function DialogChangePass(props) {
                 const avataData = await updateAvtProfile(formData)
                 toast.success("Cập nhật ảnh đại diện thành công")
             }
+            const data = await updateProfile(item);
+            localStorage.setItem("currentuser", JSON.stringify(data?.data));
+            toast.success("Cập nhật thông tin cá nhân thành công")
             handleClose();
         } catch (error) {
             console.log(error)
@@ -73,7 +74,7 @@ export default function DialogChangePass(props) {
             open={open}
             onClose={handleClose}
         >
-            <DialogContent className="custom-scroll-content">
+            <DialogContent className="">
                 <div class="font-[sans-serif] bg-gray-50" >
                     <div class="grid lg:grid-cols-2 xl:grid-cols-2 gap-4 h-full">
                         <div class="col-span-2 h-max rounded-md p-8 sticky top-0">

@@ -1,20 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import DialogChangePass from './DialogChangePass';
 import { convertDate, getCurrentUser } from '../../../appFunction';
 
 function Profile() {
-    let user = getCurrentUser();
-    const [dataState, setDataState] = useState(user);
+    const [dataState, setDataState] = useState(null);
     const [open, setOpen] = useState(false);
 
     const handleClose = () => {
-        setOpen(false)
+        setOpen(false);
+        search();
     }
     const search = async () => {
         try {
-
+            let user = getCurrentUser();
+            setDataState(user)
         } catch (error) {
 
         }
@@ -22,6 +23,9 @@ function Profile() {
     const handleOpen = () => {
         setOpen(true)
     }
+    useEffect(() => {
+        search()
+    }, [])
     return (
         <><div className="bg-white overflow-hidden shadow rounded-lg border">
             <div className="px-4 py-5 sm:px-6">

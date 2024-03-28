@@ -2,14 +2,13 @@ import MaterialTable from 'material-table'
 import React, { useEffect, useState } from 'react'
 import { Button, Grid, IconButton, Tooltip } from "@material-ui/core";
 import { tableIcons } from '../../../utils/tableIcon';
-import SaleDialog from './SaleDialog';
+import ManageVoucherDialog from './ManageVoucherDialog';
 import { Delete, Edit } from '@material-ui/icons';
-import { deleteSales, getAllSales } from './SaleServices';
+import { deleteVoucher, getAllVouchers } from './ManageVoucherServices';
 import ConfirmDialog from '../../../common/ConfirmDialog';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { localization } from '../../../utils/localization';
-import { convertToDate } from '../../../../appFunction';
 
 function MaterialButton(props) {
     const item = props.item;
@@ -46,7 +45,7 @@ function MaterialButton(props) {
         </>
     );
 }
-function Sale() {
+function ManageVoucher() {
 
     const [open, setOpen] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
@@ -74,7 +73,7 @@ function Sale() {
 
     const handleYesClick = async () => {
         try {
-            const data = await deleteSales(item);
+            const data = await deleteVoucher(item);
             toast.success("Xóa thành công!")
             updatePageData();
             handleClose();
@@ -85,7 +84,7 @@ function Sale() {
 
     const updatePageData = async () => {
         try {
-            const data = await getAllSales();
+            const data = await getAllVouchers();
             setListItem(data?.data)
         } catch (error) {
 
@@ -101,17 +100,18 @@ function Sale() {
                     if (0 === method) {
                         handleEdit(rowData);
                     } else if (1 === method) {
-                        handleDelete(rowData?.idSale);
+                        handleDelete(rowData?.idVoucher);
                     } else {
-                        alert("Call Selected Here:" + rowData?.idSale);
+                        alert("Call Selected Here:" + rowData?.idVoucher);
                     }
                 }}
             />
         },
-        { title: 'Tên sale', field: 'nameSale' },
+        { title: 'Tên phiếu', field: 'nameVoucher' },
+        { title: 'Mã phiếu', field: 'code' },
+        { title: 'Số lượng', field: 'quantity' },
         { title: 'Phần trăm giảm giá', field: 'percent' },
-        { title: 'Ngày có hiệu lực', field: 'startDate', render: (rowData) => convertToDate(rowData?.startDate) },
-        { title: 'Ngày hết hiệu lực', field: 'endDate', render: (rowData) => convertToDate(rowData?.endDate) },
+        { title: 'Tổng giá áp dụng', field: 'totalPriceApply' },
     ]
     useEffect(() => {
         updatePageData();
@@ -122,18 +122,11 @@ function Sale() {
                 <Grid item><Button onClick={handleClickOpen} variant='contained' color="primary" size='small' ><span className='normal-case'>Thêm mới</span></Button></Grid>
                 <Grid item><Button variant='contained' color="primary" size='small' ><span className='normal-case'>Tìm kiếm nâng cao</span></Button></Grid>
             </Grid>
-            {open && <SaleDialog item={item} open={open} handleClose={handleClose} updatePageData={updatePageData} />}
+            {open && <ManageVoucherDialog item={item} open={open} handleClose={handleClose} updatePageData={updatePageData} />}
             {openDelete && <ConfirmDialog open={openDelete} handleYesClick={handleYesClick} handleClose={handleClose} />}
             <div className='mt-3' >
                 <MaterialTable
-                    options={{
-                        sorting: false,
-                        rowStyle: (rowData) => ({
-                            backgroundColor:
-                                rowData.tableData.id % 2 === 1 ? "#EEE" : "#FFF",
-                        }),
-                    }}
-                    title="Màu sản phẩm"
+                    title="Phiếu giảm giá"
                     columns={columns}
                     data={listItem}
                     icons={tableIcons}
@@ -145,4 +138,4 @@ function Sale() {
     )
 }
 
-export default Sale
+export default ManageVoucher

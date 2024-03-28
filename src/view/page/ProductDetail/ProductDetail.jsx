@@ -4,10 +4,12 @@ import { addToCart, getProductByID, getProductDetailByID } from "./ProductDetail
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { getListImageProduct } from "../AdminPage/ManageProduct/ManageProductServices";
+import { getCurrentUser } from "../../../appFunction";
 
 const ProductDetail = () => {
 
     const { id } = useParams();
+    let user = getCurrentUser();
     const [count, setCount] = useState(0);
     const [item, setItem] = useState({});
     const [listData, setlistData] = useState([]);
@@ -16,7 +18,7 @@ const ProductDetail = () => {
 
     const convertDataState = (value) => {
         return {
-            idProfile: 1,
+            idProfile: user?.idprofile,
             idProduct: value?.item?.idProduct,
             idSize: value?.idSize,
             idColor: value?.idColor,
@@ -195,7 +197,7 @@ const ProductDetail = () => {
                                     return <button
                                         onClick={() => handleSelect(i?.color?.idColor, "idColor")}
                                         type="button"
-                                        class={`text-white ${i?.color?.isSelect && "outline-none ring-4 ring-gray-300 dark:ring-gray-700"} bg-gray-800 hover:bg-gray-900   font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700  dark:border-gray-700`}>
+                                        class={`text-white ${i?.color?.isSelect && "outline-none ring-4 ring-gray-300 dark:ring-gray-700"} bg-yellow-400 hover:bg-gray-900   font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-yellow-400 dark:hover:bg-gray-700  dark:border-gray-700`}>
                                         {i?.color?.colorName}
                                     </button>
                                 })}
@@ -209,7 +211,7 @@ const ProductDetail = () => {
                                     return <button
                                         onClick={() => handleSelect(i?.size?.idSize, "idSize")}
                                         type="button"
-                                        class={`text-white ${i?.size?.isSelect && "outline-none ring-4 ring-gray-300 dark:ring-gray-700"} bg-gray-800 hover:bg-gray-900   font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700  dark:border-gray-700`}>
+                                        class={`text-white ${i?.size?.isSelect && "outline-none ring-4 ring-gray-300 dark:ring-gray-700"} bg-yellow-400 hover:bg-gray-900   font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-yellow-400 dark:hover:bg-gray-700  dark:border-gray-700`}>
                                         {i?.size?.sizeName}
                                     </button>
                                 })}

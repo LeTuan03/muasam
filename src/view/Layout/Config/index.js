@@ -1,5 +1,7 @@
 import { SvgIcon } from "@material-ui/core";
 import {
+  AirplanemodeActiveOutlined,
+  AssignmentTurnedIn,
   ColorLens,
   Dashboard,
   FormatSize,
@@ -24,6 +26,15 @@ export const items = () => {
     {
       title: "Quản lý sản phẩm",
       path: "/admin/list-products",
+      icon: (
+        <SvgIcon fontSize="small">
+          <ShoppingCart />
+        </SvgIcon>
+      ),
+    },
+    {
+      title: "Chi tiết sản phẩm",
+      path: "/admin/detail-products",
       icon: (
         <SvgIcon fontSize="small">
           <ShoppingCart />
@@ -58,11 +69,29 @@ export const items = () => {
       ),
     },
     {
+      title: "Quản lý đơn hàng",
+      path: "/admin/orders",
+      icon: (
+        <SvgIcon fontSize="small">
+          <AirplanemodeActiveOutlined />
+        </SvgIcon>
+      ),
+    },
+    {
       title: "Mã giảm giá",
       path: "/admin/sales",
       icon: (
         <SvgIcon fontSize="small">
           <SaveOutlined />
+        </SvgIcon>
+      ),
+    },
+    {
+      title: "Phiếu giảm giá",
+      path: "/admin/vouchers",
+      icon: (
+        <SvgIcon fontSize="small">
+          <AssignmentTurnedIn />
         </SvgIcon>
       ),
     },

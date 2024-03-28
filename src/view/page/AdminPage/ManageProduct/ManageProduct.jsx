@@ -84,6 +84,7 @@ function ManageProduct() {
         {
             title: 'Thao tác',
             field: '',
+            width: 100,
             render: (rowData) => <MaterialButton
                 item={rowData}
                 onSelect={(rowData, method) => {
@@ -96,7 +97,18 @@ function ManageProduct() {
                 }}
             />
         },
-        { title: 'Tên sản phẩm', field: 'productName' },
+        {
+            title: 'Tên sản phẩm', field: 'productName',
+            render: (rowData) => {
+                return <div class="flex items-center gap-4">
+                    <img class="w-10 h-10 rounded" src={rowData?.imageMain} />
+                    <div class="font-medium ">
+                        <div>{rowData?.productName}</div>
+                        <div class="text-sm">{rowData?.productDes}</div>
+                    </div>
+                </div>
+            }
+        },
         { title: 'Giá mua', field: 'importPrice' },
         { title: 'Giá bán', field: 'exportPrice' },
         {
@@ -118,6 +130,13 @@ function ManageProduct() {
             {open && <ManageProductDialog item={item} open={open} handleClose={handleClose} updatePageData={updatePageData} />}
             <div className='mt-3' >
                 <MaterialTable
+                    options={{
+                        sorting: false,
+                        rowStyle: (rowData) => ({
+                            backgroundColor:
+                                rowData.tableData.id % 2 === 1 ? "#EEE" : "#FFF",
+                        }),
+                    }}
                     title="Danh sách sản phẩm"
                     columns={columns}
                     data={listItem}

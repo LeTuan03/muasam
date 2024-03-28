@@ -16,6 +16,9 @@ import ManageColor from "./view/page/AdminPage/ManageColor/ManageColor";
 import ManageSize from "./view/page/AdminPage/ManageSize/ManageSize";
 import Progress from "./view/page/Progress/Progress";
 import Sale from "./view/page/AdminPage/Sale/Sale";
+import ManageOrder from "./view/page/AdminPage/ManageOrder/ManageOrder";
+import ManageVoucher from "./view/page/AdminPage/ManageVoucher/ManageVoucher";
+import ManageProductDetail from "./view/page/AdminPage/ManageProductDetail/ManageProductDetail";
 
 const theme = createTheme();
 
@@ -79,6 +82,10 @@ function App() {
           element: <ManageProduct />,
         },
         {
+          path: "/admin/detail-products",
+          element: <ManageProductDetail />,
+        },
+        {
           path: "/admin/category-product",
           element: <ManageCategory />,
         },
@@ -97,6 +104,14 @@ function App() {
         {
           path: "/admin/sales",
           element: <Sale></Sale>,
+        },
+        {
+          path: "/admin/orders",
+          element: <ManageOrder></ManageOrder>,
+        },
+        {
+          path: "/admin/vouchers",
+          element: <ManageVoucher></ManageVoucher>,
         },
       ],
     },

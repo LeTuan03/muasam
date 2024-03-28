@@ -2,9 +2,9 @@ import MaterialTable from 'material-table'
 import React, { useEffect, useState } from 'react'
 import { Button, Grid, IconButton, Tooltip } from "@material-ui/core";
 import { tableIcons } from '../../../utils/tableIcon';
-import SaleDialog from './SaleDialog';
+import ManageOrderDialog from './ManageOrderDialog';
 import { Delete, Edit } from '@material-ui/icons';
-import { deleteSales, getAllSales } from './SaleServices';
+import { deleteSize, getAllOrder, getAllSize } from './ManageOrderServices';
 import ConfirmDialog from '../../../common/ConfirmDialog';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -29,7 +29,7 @@ function MaterialButton(props) {
                     <Edit />
                 </IconButton>
             </Tooltip>
-            <Tooltip
+            {/* <Tooltip
                 title={"Xóa"}
                 placement="right-end"
                 enterDelay={300}
@@ -42,11 +42,11 @@ function MaterialButton(props) {
                 >
                     <Delete />
                 </IconButton>
-            </Tooltip>
+            </Tooltip> */}
         </>
     );
 }
-function Sale() {
+function ManageOrder() {
 
     const [open, setOpen] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
@@ -74,7 +74,7 @@ function Sale() {
 
     const handleYesClick = async () => {
         try {
-            const data = await deleteSales(item);
+            const data = await deleteSize(item);
             toast.success("Xóa thành công!")
             updatePageData();
             handleClose();
@@ -85,7 +85,7 @@ function Sale() {
 
     const updatePageData = async () => {
         try {
-            const data = await getAllSales();
+            const data = await getAllOrder();
             setListItem(data?.data)
         } catch (error) {
 
@@ -95,23 +95,37 @@ function Sale() {
         {
             title: 'Thao tác',
             field: '',
+            align: "center",
+            width: 100,
             render: (rowData) => <MaterialButton
                 item={rowData}
                 onSelect={(rowData, method) => {
                     if (0 === method) {
                         handleEdit(rowData);
                     } else if (1 === method) {
-                        handleDelete(rowData?.idSale);
+                        handleDelete(rowData?.idSize);
                     } else {
-                        alert("Call Selected Here:" + rowData?.idSale);
+                        alert("Call Selected Here:" + rowData?.idSize);
                     }
                 }}
             />
         },
-        { title: 'Tên sale', field: 'nameSale' },
-        { title: 'Phần trăm giảm giá', field: 'percent' },
-        { title: 'Ngày có hiệu lực', field: 'startDate', render: (rowData) => convertToDate(rowData?.startDate) },
-        { title: 'Ngày hết hiệu lực', field: 'endDate', render: (rowData) => convertToDate(rowData?.endDate) },
+        {
+            title: 'Ngày đặt hàng',
+            field: 'orderAt',
+            width: 140,
+            render: (rowData) => convertToDate(rowData?.orderAt)
+        },
+        { title: 'Trạng thái đơn hàng', field: 'statusOrder', width: 300 },
+        {
+            title: 'Người đặt hàng',
+            field: 'totalPrice',
+            width: 190,
+            render: (rowData) => rowData?.profile?.fullName
+        },
+        { title: 'Thành tiền', field: 'totalFinal', width: 190 },
+        { title: 'Loại hình thanh toán', field: 'orderType', width: 290 },
+        { title: 'Trạng thái thanh toán', field: 'statusPayment', width: 290 },
     ]
     useEffect(() => {
         updatePageData();
@@ -122,10 +136,15 @@ function Sale() {
                 <Grid item><Button onClick={handleClickOpen} variant='contained' color="primary" size='small' ><span className='normal-case'>Thêm mới</span></Button></Grid>
                 <Grid item><Button variant='contained' color="primary" size='small' ><span className='normal-case'>Tìm kiếm nâng cao</span></Button></Grid>
             </Grid>
-            {open && <SaleDialog item={item} open={open} handleClose={handleClose} updatePageData={updatePageData} />}
+            {open && <ManageOrderDialog item={item} open={open} handleClose={handleClose} updatePageData={updatePageData} />}
             {openDelete && <ConfirmDialog open={openDelete} handleYesClick={handleYesClick} handleClose={handleClose} />}
-            <div className='mt-3' >
+            <div className='mt-3'>
                 <MaterialTable
+                    title="Danh sách đơn hàng"
+                    columns={columns}
+                    data={listItem}
+                    icons={tableIcons}
+                    localization={localization}
                     options={{
                         sorting: false,
                         rowStyle: (rowData) => ({
@@ -133,11 +152,6 @@ function Sale() {
                                 rowData.tableData.id % 2 === 1 ? "#EEE" : "#FFF",
                         }),
                     }}
-                    title="Màu sản phẩm"
-                    columns={columns}
-                    data={listItem}
-                    icons={tableIcons}
-                    localization={localization}
                 />
             </div>
             <ToastContainer autoClose={3000} />
@@ -145,4 +159,4 @@ function Sale() {
     )
 }
 
-export default Sale
+export default ManageOrder

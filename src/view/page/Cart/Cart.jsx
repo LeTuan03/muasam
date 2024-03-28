@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import DialogPurchase from '../../components/DialogPurchase';
-import { applyVoucher, deleteCart, getAllCart } from './CartServices';
+import { applyVoucher, deleteCart, getAllCart, getCartByIDProfile } from './CartServices';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { getCurrentUser } from '../../../appFunction';
 
 function Cart() {
 
+    let user = getCurrentUser();
     const [dataState, setDataState] = useState({});
     const [open, setOpen] = useState(false);
     const [voucher, setVoucher] = useState("");
@@ -60,7 +62,7 @@ function Cart() {
     }
     const search = async () => {
         try {
-            const data = await getAllCart();
+            const data = await getCartByIDProfile(user?.idprofile);
             setListItem(data?.data);
             setDataState((pre) => ({
                 ...pre,
@@ -85,6 +87,7 @@ function Cart() {
             formData.append("code", voucher);
             formData.append("totalPrice", calculatePrice(listItem));
             const data = await applyVoucher(formData);
+            console.log(data)
             toast.success("Áp dụng mã giảm giá thành công");
         } catch (error) {
             toast.error(error?.response?.data || "Không thể sử dụng mã giảm giá này")

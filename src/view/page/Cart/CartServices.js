@@ -5,6 +5,10 @@ export const getAllCart = () => {
   return axios.get(API_PATH + "/getAllCart");
 };
 
+export const getCartByIDProfile = (id) => {
+  return axios.get(API_PATH + "/getCartByIDProfile/" + id);
+};
+
 export const deleteCart = (id) => {
   return axios.delete(API_PATH + "/delete/" + id);
 };

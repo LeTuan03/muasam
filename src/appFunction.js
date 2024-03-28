@@ -1,5 +1,5 @@
 import { createFilterOptions } from "@mui/material";
-import { PATH } from "./appConst";
+import { OBJECT_STATUS_ORDER, PATH } from "./appConst";
 
 export const getTitlePage = (text) => {
   switch (text) {
@@ -75,3 +75,21 @@ export const convertDate = (inputDate) => {
 //   const isoString = format(date, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx");
 //   return isoString;
 // };
+
+export const getStatusOrder = (name) => {
+  switch (name) {
+    case OBJECT_STATUS_ORDER.CHO_NGUOI_DUNG_XAC_NHAN.name:
+      return OBJECT_STATUS_ORDER.CHO_NGUOI_DUNG_XAC_NHAN;
+    case OBJECT_STATUS_ORDER.CHO_NGUOI_BAN_XAC_NHAN.name:
+      return OBJECT_STATUS_ORDER.CHO_NGUOI_BAN_XAC_NHAN;
+    case OBJECT_STATUS_ORDER.CHO_LAY_HANG.name:
+      return OBJECT_STATUS_ORDER.CHO_LAY_HANG;
+    case OBJECT_STATUS_ORDER.CHO_GIAO_HANG.name:
+      return OBJECT_STATUS_ORDER.CHO_GIAO_HANG;
+    case OBJECT_STATUS_ORDER.DA_GIAO.name:
+      return OBJECT_STATUS_ORDER.DA_GIAO;
+
+    default:
+      return OBJECT_STATUS_ORDER.CHO_NGUOI_DUNG_XAC_NHAN;
+  }
+};

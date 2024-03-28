@@ -43,4 +43,7 @@ export const localization = {
     searchTooltip: "Tìm kiếm",
     searchPlaceholder: "Tìm kiếm",
   },
+  rowStyle: (rowData) => ({
+    backgroundColor: rowData.tableData.id % 2 === 1 ? "#EEE" : "#FFF",
+  }),
 };

@@ -123,6 +123,13 @@ function ManageSize() {
             {openDelete && <ConfirmDialog open={openDelete} handleYesClick={handleYesClick} handleClose={handleClose} />}
             <div className='mt-3' >
                 <MaterialTable
+                    options={{
+                        sorting: false,
+                        rowStyle: (rowData) => ({
+                            backgroundColor:
+                                rowData.tableData.id % 2 === 1 ? "#EEE" : "#FFF",
+                        }),
+                    }}
                     title="Bảng kích cỡ sản phẩm"
                     columns={columns}
                     data={listItem}

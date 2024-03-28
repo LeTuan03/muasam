@@ -23,7 +23,7 @@ function Login() {
             const data = await login(formData);
             localStorage.setItem("currentuser", JSON.stringify(data?.data?.profile));
             localStorage.setItem("accessToken", data?.data?.accessToken);
-            if (data?.data?.role === "admin") {
+            if (data?.data?.role === "ADMIN") {
                 navigate("/admin");
             } else {
                 navigate("/");

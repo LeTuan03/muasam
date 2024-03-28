@@ -7,6 +7,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { insertBill } from '../page/Cart/CartServices';
 import { toast } from 'react-toastify';
+import { getCurrentUser } from '../../appFunction';
 
 export default function DialogPurchase(props) {
     let {
@@ -16,6 +17,7 @@ export default function DialogPurchase(props) {
         handleClose
     } = props;
 
+    let user = getCurrentUser();
     const convertListItem = (value) => {
         return {
             idProduct: value?.product?.idProduct,
@@ -30,7 +32,7 @@ export default function DialogPurchase(props) {
             ...dataState,
             totalDiscount: 0,
             totalFinal: dataState?.totalPrice,
-            idProfile: 1,
+            idProfile: user?.idprofile,
             idVoucher: 2,
             billDetailsDTOList: value?.map(i => convertListItem(i))
         }
