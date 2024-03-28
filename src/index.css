@@ -1,5 +1,11 @@
-body {
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* body {
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -10,4 +16,45 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+} */
+.w-full {
+  width: 100%;
+}
+
+.loading {
+  animation: rotate360 2s linear infinite;
+}
+
+@keyframes rotate360 {
+  from {
+    transform: rotate(360deg);
+  }
+
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+ #journal-scroll::-webkit-scrollbar {
+   width: 4px;
+   cursor: pointer;
+ }
+
+ #journal-scroll::-webkit-scrollbar-track {
+   background-color: rgba(229, 231, 235, var(--bg-opacity));
+   cursor: pointer;
+ }
+
+ #journal-scroll::-webkit-scrollbar-thumb {
+   cursor: pointer;
+   background-color: #a0aec0;
+ }
+
+.custom-scroll-content {
+  max-height: 550px;
+}
+
+.MuiTableHead-root .MuiTableCell-root {
+  background-color: #3f51b5;
+  color: white;
 }
