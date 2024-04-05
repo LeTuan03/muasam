@@ -9,6 +9,7 @@ import ConfirmDialog from '../../../common/ConfirmDialog';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { localization } from '../../../utils/localization';
+import { formatCurrency } from '../../../../appFunction';
 
 function MaterialButton(props) {
     const item = props.item;
@@ -109,8 +110,8 @@ function ManageProduct() {
                 </div>
             }
         },
-        { title: 'Giá mua', field: 'importPrice' },
-        { title: 'Giá bán', field: 'exportPrice' },
+        { title: 'Giá mua', field: 'importPrice', render: (rowData) => formatCurrency(rowData?.importPrice) },
+        { title: 'Giá bán', field: 'exportPrice', render: (rowData) => formatCurrency(rowData?.exportPrice) },
         {
             title: 'Loại sản phẩm',
             field: 'category',

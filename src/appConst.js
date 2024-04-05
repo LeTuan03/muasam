@@ -4,6 +4,7 @@ export const COLOR = {
   textWhite: "#fff",
 };
 export const STATUS = {
+  SUCCESS: 200,
   UNAUTHORIZED_ERROR: 401,
   FORBIDDEN_ERROR: 403,
 };

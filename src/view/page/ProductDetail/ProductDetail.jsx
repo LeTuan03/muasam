@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
+import { FacebookProvider, Comments } from 'react-facebook';
+
 import { addToCart, getProductByID, getProductDetailByID } from "./ProductDetailServices";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { getListImageProduct } from "../AdminPage/ManageProduct/ManageProductServices";
-import { getCurrentUser } from "../../../appFunction";
+import { formatCurrency, getCurrentUser } from "../../../appFunction";
 
 const ProductDetail = () => {
 
@@ -15,6 +17,7 @@ const ProductDetail = () => {
     const [listData, setlistData] = useState([]);
     const [dataChange, setData] = useState({});
     const [dataState, setDataState] = useState({});
+    const [url, setUrl] = useState(null);
 
     const convertDataState = (value) => {
         return {
@@ -33,13 +36,31 @@ const ProductDetail = () => {
             const data3 = await getListImageProduct(id);
 
             setItem(data?.data?.data)
+            let listColor = [];
+            let listSize = [];
+
+            data2?.data?.forEach(element => {
+                let idColor = element?.color?.idColor;
+                let idSize = element?.size?.idSize;
+                let isExitColor = listColor.find(i => i?.color?.idColor === idColor);
+                let isExitSize = listColor.find(i => i?.size?.idSize === idSize);
+                if (!isExitColor) {
+                    listColor.push(element)
+                }
+                if (!isExitSize) {
+                    listSize.push(element);
+                }
+            });
+
             setlistData(data2?.data?.map(i => ({
                 ...i,
                 isSelect: false
             })))
             setDataState((pre) => ({
                 ...pre,
-                listImage: data3?.data
+                listImage: data3?.data,
+                listColor,
+                listSize
             }))
 
         } catch (error) {
@@ -56,8 +77,24 @@ const ProductDetail = () => {
         }
     };
 
+    const validateSubmit = (value) => {
+        if (!value?.idColor) {
+            toast.info("Bạn chưa chọn màu sản phẩm");
+            return false;
+        }
+        if (!value?.idSize) {
+            toast.info("Bạn chưa chọn kích thước sản phẩm");
+            return false;
+        }
+        if (count <= 0) {
+            toast.info("Số lượng sản phẩm không được nhỏ hơn 0");
+            return false;
+        }
+        return true;
+    }
     const handleAddCart = async () => {
         try {
+            if (!validateSubmit({ item, ...dataChange })) return;
             const data = await addToCart({ ...convertDataState({ item, ...dataChange }) });
             toast.success("Thêm vào giỏ hàng thành công");
         } catch (error) {
@@ -97,6 +134,7 @@ const ProductDetail = () => {
     }
 
     useEffect(() => {
+        setUrl(window.location.href);
         getProductDetail();
         window.scrollTo({
             top: 0,
@@ -174,7 +212,8 @@ const ProductDetail = () => {
                     </div>
 
                     <p className=" font-normal text-base leading-6 text-gray-600 mt-7">{item?.productDes}</p>
-                    <p className=" font-semibold lg:text-2xl text-xl lg:leading-6 leading-5 mt-6 ">{item?.exportPrice} VNĐ</p>
+                    <p className=" font-semibold lg:text-2xl text-xl lg:leading-6 leading-5 mt-6 ">{formatCurrency(item?.exportPrice)}</p>
+                    <p className=" font-semibold lg:text-2xl text-xl lg:leading-6 leading-5 mt-6 ">{item?.sale?.percent ? "Giảm giá: " + item?.sale?.percent + " %" : ""}</p>
 
                     <div className="lg:mt-11 mt-10">
                         <div className="flex flex-row justify-between">
@@ -193,7 +232,7 @@ const ProductDetail = () => {
                         <div className=" flex flex-row justify-between items-center mt-4">
                             <p className="font-medium text-base leading-4 text-gray-600">Màu sắc</p>
                             <div className="flex">
-                                {listData?.map(i => {
+                                {dataState?.listColor?.map(i => {
                                     return <button
                                         onClick={() => handleSelect(i?.color?.idColor, "idColor")}
                                         type="button"
@@ -207,7 +246,7 @@ const ProductDetail = () => {
                         <div className=" flex flex-row justify-between items-center mt-4">
                             <p className="font-medium text-base leading-4 text-gray-600">Kích cỡ</p>
                             <div className="flex">
-                                {listData?.map(i => {
+                                {dataState?.listSize?.map(i => {
                                     return <button
                                         onClick={() => handleSelect(i?.size?.idSize, "idSize")}
                                         type="button"
@@ -452,6 +491,11 @@ const ProductDetail = () => {
                         <p className="text-normal text-base leading-6 text-gray-600 mt-4">Các sản phẩm với đặc tính được mô tả rõ ràng sẽ dễ dàng hơn trong việc tiếp cận những thị trường lớn và đối tượng khách hàng mục tiêu mà Doanh nghiệp muốn nhắm đến.</p>
                     </div>
                 </div>
+            </div>
+            <div class="bg-white py-12 text-gray-700 sm:py-16 lg:py-20">
+                <FacebookProvider appId="959253695559182">
+                    <Comments href={window.location.href} />
+                </FacebookProvider>
             </div>
             <ToastContainer autoClose={3000} />
         </div>

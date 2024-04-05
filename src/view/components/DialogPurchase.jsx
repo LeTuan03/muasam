@@ -16,7 +16,7 @@ export default function DialogPurchase(props) {
         dataState,
         handleClose
     } = props;
-
+    console.log(dataState)
     let user = getCurrentUser();
     const convertListItem = (value) => {
         return {
@@ -29,9 +29,11 @@ export default function DialogPurchase(props) {
     }
     const convertData = (value) => {
         return {
-            ...dataState,
-            totalDiscount: 0,
-            totalFinal: dataState?.totalPrice,
+            // ...dataState,
+            totalItem: value?.length,
+            totalPrice: dataState?.totalPrice,
+            totalDiscount: dataState?.soTienGiam,
+            totalFinal: dataState?.totalPrice - (dataState?.soTienGiam || 0),
             idProfile: user?.idprofile,
             idVoucher: 2,
             billDetailsDTOList: value?.map(i => convertListItem(i))

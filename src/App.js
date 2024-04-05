@@ -19,12 +19,14 @@ import Sale from "./view/page/AdminPage/Sale/Sale";
 import ManageOrder from "./view/page/AdminPage/ManageOrder/ManageOrder";
 import ManageVoucher from "./view/page/AdminPage/ManageVoucher/ManageVoucher";
 import ManageProductDetail from "./view/page/AdminPage/ManageProductDetail/ManageProductDetail";
+import ForgetPass from "./view/page/Login/ForgetPass";
+import Register from "./view/page/Register/Register";
 
 const theme = createTheme();
 
 function App() {
   const getRoleAccount = async () => {
-    if (window.location.pathname === "/login") {
+    if (["/login", "/forget-pass"].includes(window.location.pathname)) {
       return;
     }
     if (!localStorage.getItem("accessToken")) {
@@ -118,6 +120,14 @@ function App() {
     {
       path: "/login",
       element: <Login></Login>,
+    },
+    {
+      path: "/forget-pass",
+      element: <ForgetPass></ForgetPass>,
+    },
+    {
+      path: "/register",
+      element: <Register></Register>,
     },
   ]);
   return (

@@ -6,7 +6,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { Avatar, Box, Grid, ImageList, ImageListItem, TextField } from '@material-ui/core';
 import { toast } from 'react-toastify';
-import { addProduct, getListImageProduct, insertChooseSize, updateListImageProduct, uploadImageMainProduct } from './ManageProductServices';
+import { addProduct, getListImageProduct, insertChooseSize, updateListImageProduct, updateProduct, uploadImageMainProduct } from './ManageProductServices';
 import { CachedOutlined } from '@material-ui/icons';
 import { getAllCategorys } from '../ManageCategory/ManageCategoryServices';
 import { Autocomplete } from '@mui/material';
@@ -69,7 +69,7 @@ export default function ManageProductDialog(props) {
             importPrice: value?.importPrice,
             exportPrice: value?.exportPrice,
             idCategoty: value?.category?.idCategories,
-            idSale: value?.sale?.idSale
+            idSale: value?.sale?.idSale,
         }
 
     }
@@ -78,16 +78,16 @@ export default function ManageProductDialog(props) {
         e.preventDefault();
         try {
             if (dataState?.idProduct) {
+                const data = await updateProduct(convertData(dataState), dataState?.idProduct)
+                toast.success("Cập nhật thành công sản phẩm");
             } else {
                 const data = await addProduct(convertData(dataState));
                 toast.success("Thêm mới thành công sản phẩm");
-                handleClose();
-                updatePageData();
             }
         } catch (error) {
         } finally {
-            // props.handleClose();
-            // props.updatePageData();
+            props.handleClose();
+            props.updatePageData();
         }
     }
 
@@ -294,9 +294,11 @@ export default function ManageProductDialog(props) {
                     <Button onClick={props.handleClose} style={{ textTransform: "none" }} size='small' color="secondary" variant='contained'>
                         Hủy
                     </Button>
-                    {!dataState?.idProduct && <Button type='submit' style={{ textTransform: "none" }} size='small' color="primary" variant='contained'>
+                    {/* {!dataState?.idProduct &&  */}
+                    <Button type='submit' style={{ textTransform: "none" }} size='small' color="primary" variant='contained'>
                         Lưu
-                    </Button>}
+                    </Button>
+                    {/* } */}
                 </DialogActions>
             </form>
         </Dialog>

@@ -2,6 +2,7 @@ import { AddCircleOutlined, Search } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom';
 import { getByCateID } from './ProductServices';
+import { formatCurrency } from '../../../appFunction';
 
 function Product() {
     const [listItem, setListItem] = useState([]);
@@ -10,7 +11,7 @@ function Product() {
     const getListProductByType = async () => {
         try {
             const data = await getByCateID(idProductType?.id);
-            setListItem(data?.data?.data)
+            setListItem(data?.data?.data || [])
         } catch (error) {
             console.log(error)
         }
@@ -52,47 +53,24 @@ function Product() {
                 <section
                     class="p-5 md:p-0 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-10 items-start ">
                     {listItem?.map(i => {
-                        return <section class="p-5 py-10 bg-purple-50 text-center transform duration-500 hover:-translate-y-2 cursor-pointer">
-                            <img className='h-[400px] w-[100%]' src={i?.imageMain ? i?.imageMain : "https://www.dropbox.com/s/mlor33hzk73rh0c/x14423.png?dl=1"} alt="" />
-                            <div class="space-x-1 flex justify-center mt-10">
-                                <svg class="w-4 h-4 mx-px fill-current text-orange-600" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 14 14">
-                                    <path
-                                        d="M6.43 12l-2.36 1.64a1 1 0 0 1-1.53-1.11l.83-2.75a1 1 0 0 0-.35-1.09L.73 6.96a1 1 0 0 1 .59-1.8l2.87-.06a1 1 0 0 0 .92-.67l.95-2.71a1 1 0 0 1 1.88 0l.95 2.71c.13.4.5.66.92.67l2.87.06a1 1 0 0 1 .59 1.8l-2.3 1.73a1 1 0 0 0-.34 1.09l.83 2.75a1 1 0 0 1-1.53 1.1L7.57 12a1 1 0 0 0-1.14 0z">
-                                    </path>
-                                </svg>
-                                <svg class="w-4 h-4 mx-px fill-current text-orange-600" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 14 14">
-                                    <path
-                                        d="M6.43 12l-2.36 1.64a1 1 0 0 1-1.53-1.11l.83-2.75a1 1 0 0 0-.35-1.09L.73 6.96a1 1 0 0 1 .59-1.8l2.87-.06a1 1 0 0 0 .92-.67l.95-2.71a1 1 0 0 1 1.88 0l.95 2.71c.13.4.5.66.92.67l2.87.06a1 1 0 0 1 .59 1.8l-2.3 1.73a1 1 0 0 0-.34 1.09l.83 2.75a1 1 0 0 1-1.53 1.1L7.57 12a1 1 0 0 0-1.14 0z">
-                                    </path>
-                                </svg>
-                                <svg class="w-4 h-4 mx-px fill-current text-orange-600" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 14 14">
-                                    <path
-                                        d="M6.43 12l-2.36 1.64a1 1 0 0 1-1.53-1.11l.83-2.75a1 1 0 0 0-.35-1.09L.73 6.96a1 1 0 0 1 .59-1.8l2.87-.06a1 1 0 0 0 .92-.67l.95-2.71a1 1 0 0 1 1.88 0l.95 2.71c.13.4.5.66.92.67l2.87.06a1 1 0 0 1 .59 1.8l-2.3 1.73a1 1 0 0 0-.34 1.09l.83 2.75a1 1 0 0 1-1.53 1.1L7.57 12a1 1 0 0 0-1.14 0z">
-                                    </path>
-                                </svg>
-                                <svg class="w-4 h-4 mx-px fill-current text-orange-600" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 14 14">
-                                    <path
-                                        d="M6.43 12l-2.36 1.64a1 1 0 0 1-1.53-1.11l.83-2.75a1 1 0 0 0-.35-1.09L.73 6.96a1 1 0 0 1 .59-1.8l2.87-.06a1 1 0 0 0 .92-.67l.95-2.71a1 1 0 0 1 1.88 0l.95 2.71c.13.4.5.66.92.67l2.87.06a1 1 0 0 1 .59 1.8l-2.3 1.73a1 1 0 0 0-.34 1.09l.83 2.75a1 1 0 0 1-1.53 1.1L7.57 12a1 1 0 0 0-1.14 0z">
-                                    </path>
-                                </svg>
-                                <svg class="w-4 h-4 mx-px fill-current text-gray-300" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 14 14">
-                                    <path
-                                        d="M6.43 12l-2.36 1.64a1 1 0 0 1-1.53-1.11l.83-2.75a1 1 0 0 0-.35-1.09L.73 6.96a1 1 0 0 1 .59-1.8l2.87-.06a1 1 0 0 0 .92-.67l.95-2.71a1 1 0 0 1 1.88 0l.95 2.71c.13.4.5.66.92.67l2.87.06a1 1 0 0 1 .59 1.8l-2.3 1.73a1 1 0 0 0-.34 1.09l.83 2.75a1 1 0 0 1-1.53 1.1L7.57 12a1 1 0 0 0-1.14 0z">
-                                    </path>
-                                </svg>
-                            </div>
-                            <h1 class="text-3xl my-5">{i?.productName}</h1>
-                            <p class="mb-5">{i?.productDes}</p>
-                            <h2 class="font-semibold mb-5">{i?.exportPrice}</h2>
-                            <Link to={`/${idProductType?.id}/${i?.idProduct}`}><button class="p-2 px-6 bg-purple-500 text-white rounded-md hover:bg-purple-600 mr-3"><Search /></button></Link>
-                            <button class="p-2 px-6 bg-purple-500 text-white rounded-md hover:bg-purple-600"><AddCircleOutlined /></button>
-                        </section>
-
+                        return (
+                            <div>
+                                <div class="card">
+                                    <div class="card-img">
+                                        <img class="img" src={i?.imageMain ? i?.imageMain : "https://www.dropbox.com/s/mlor33hzk73rh0c/x14423.png?dl=1"} alt="" />
+                                    </div>
+                                    <div class="card-title">{i?.productName}</div>
+                                    <div class="card-subtitle">{i?.productDes}</div>
+                                    <div class="card-subtitle">{`${i?.sale?.percent ? "Giảm giá: " + i?.sale?.percent + " %" : ""} `}</div>
+                                    <hr class="card-divider" />
+                                    <div class="card-footer">
+                                        <div class="card-price">{formatCurrency(i?.exportPrice || 0)}</div>
+                                        <button class="card-btn">
+                                            <Link to={`/${i?.category?.idCategories}/${i?.idProduct}`}><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="m397.78 316h-205.13a15 15 0 0 1 -14.65-11.67l-34.54-150.48a15 15 0 0 1 14.62-18.36h274.27a15 15 0 0 1 14.65 18.36l-34.6 150.48a15 15 0 0 1 -14.62 11.67zm-193.19-30h181.25l27.67-120.48h-236.6z"></path><path d="m222 450a57.48 57.48 0 1 1 57.48-57.48 57.54 57.54 0 0 1 -57.48 57.48zm0-84.95a27.48 27.48 0 1 0 27.48 27.47 27.5 27.5 0 0 0 -27.48-27.47z"></path><path d="m368.42 450a57.48 57.48 0 1 1 57.48-57.48 57.54 57.54 0 0 1 -57.48 57.48zm0-84.95a27.48 27.48 0 1 0 27.48 27.47 27.5 27.5 0 0 0 -27.48-27.47z"></path><path d="m158.08 165.49a15 15 0 0 1 -14.23-10.26l-25.71-77.23h-47.44a15 15 0 1 1 0-30h58.3a15 15 0 0 1 14.23 10.26l29.13 87.49a15 15 0 0 1 -14.23 19.74z"></path></svg></Link>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>)
                     })}
                 </section>
             </section>

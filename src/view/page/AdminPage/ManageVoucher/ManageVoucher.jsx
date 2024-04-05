@@ -9,6 +9,7 @@ import ConfirmDialog from '../../../common/ConfirmDialog';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { localization } from '../../../utils/localization';
+import { formatCurrency } from '../../../../appFunction';
 
 function MaterialButton(props) {
     const item = props.item;
@@ -111,7 +112,7 @@ function ManageVoucher() {
         { title: 'Mã phiếu', field: 'code' },
         { title: 'Số lượng', field: 'quantity' },
         { title: 'Phần trăm giảm giá', field: 'percent' },
-        { title: 'Tổng giá áp dụng', field: 'totalPriceApply' },
+        { title: 'Tổng giá áp dụng', field: 'totalPriceApply', render: (rowData) => formatCurrency(rowData?.totalPriceApply) },
     ]
     useEffect(() => {
         updatePageData();

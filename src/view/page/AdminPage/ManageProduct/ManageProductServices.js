@@ -9,8 +9,8 @@ export const addProduct = (payload) => {
   return axios.post(API_PATH + "/insertProduct", payload);
 };
 
-export const updateProduct = (payload) => {
-  return axios.put(API_PATH + "/updateProduct", payload);
+export const updateProduct = (payload, id) => {
+  return axios.put(API_PATH + "/updateProduct/" + id, payload);
 };
 
 export const deleteProduct = (id) => {

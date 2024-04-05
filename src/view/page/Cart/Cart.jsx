@@ -4,7 +4,7 @@ import DialogPurchase from '../../components/DialogPurchase';
 import { applyVoucher, deleteCart, getAllCart, getCartByIDProfile } from './CartServices';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { getCurrentUser } from '../../../appFunction';
+import { formatCurrency, getCurrentUser } from '../../../appFunction';
 
 function Cart() {
 
@@ -75,8 +75,9 @@ function Cart() {
     }
 
     const calculatePrice = (list = []) => {
-        return list.reduce((total, product) => total + (product.quantity * product.product.exportPrice), 0);
+        return list.reduce((total, product) => total + (product.quantity * (product?.product?.sale?.percent ? (product?.product?.exportPrice - (product?.product?.exportPrice * ((product?.product?.sale?.percent / 100) || 1))) : product?.product?.exportPrice)), 0);
     }
+
     const handleChangeVoucher = (e) => {
         setVoucher(e.target.value);
     }
@@ -87,7 +88,10 @@ function Cart() {
             formData.append("code", voucher);
             formData.append("totalPrice", calculatePrice(listItem));
             const data = await applyVoucher(formData);
-            console.log(data)
+            setDataState((pre) => ({
+                ...pre,
+                soTienGiam: data?.data || 0
+            }))
             toast.success("Áp dụng mã giảm giá thành công");
         } catch (error) {
             toast.error(error?.response?.data || "Không thể sử dụng mã giảm giá này")
@@ -114,6 +118,7 @@ function Cart() {
 
                     <div class="w-full max-h-[500px] overflow-auto shadow bg-white" id="journal-scroll">
                         {listItem?.map(i => {
+                            console.log(i)
                             return <div className="md:flex items-strech py-8 md:py-10 lg:py-8 border-t border-gray-50">
                                 <div className="md:w-4/12 2xl:w-1/4 w-full">
                                     <img src={i?.product?.imageMain} alt="Black Leather Purse" className="h-[200px] w-[200px] object-center object-cover md:block hidden" />
@@ -141,6 +146,7 @@ function Cart() {
                                         </div>
                                     </div>
                                     <p className="text-xs leading-3 text-gray-600 pt-2">Kích cỡ: {i?.size?.sizeName}</p>
+                                    {i?.product?.sale?.percent ? <p className="text-xs leading-3 text-gray-600 pt-4">Giảm giá: {i?.product?.sale?.percent}%</p> : ""}
                                     <p className="text-xs leading-3 text-gray-600 py-4">Màu: {i?.color?.colorName}</p>
                                     <p className="w-96 text-xs leading-3 text-gray-600">{i?.product?.productDes}</p>
                                     <p className="text-xs leading-3 text-gray-600 pt-4"> Số lượng: {i?.quantity}</p>
@@ -148,7 +154,7 @@ function Cart() {
                                         <div className="flex itemms-center">
                                             <p className="text-xs leading-3 underline text-red-500 cursor-pointer" onClick={() => handleDeleteCart(i?.idCart)}>Xóa khỏi danh sách</p>
                                         </div>
-                                        <p className="text-base font-black leading-none text-gray-800">{i?.product?.exportPrice} VNĐ</p>
+                                        <p className="text-base font-black leading-none text-gray-800">{formatCurrency(i?.product?.sale?.percent ? i?.product?.exportPrice - (i?.product?.exportPrice * (i?.product?.sale?.percent / 100) || 1) : i?.product?.exportPrice)} / 1 sản phẩm</p>
                                     </div>
                                 </div>
                             </div>
@@ -168,7 +174,7 @@ function Cart() {
                     <h1 className="font-semibold text-2xl border-b pb-8">Đơn hàng</h1>
                     <div className="flex justify-between mt-10 mb-5">
                         <span className="font-semibold text-sm uppercase">Tổng tiền</span>
-                        <span className="font-semibold text-sm">{calculatePrice(listItem)} VNĐ</span>
+                        <span className="font-semibold text-sm">{formatCurrency(calculatePrice(listItem))}</span>
                     </div>
                     {/* <div>
                         <label className="font-medium inline-block mb-3 text-sm uppercase">
@@ -178,7 +184,8 @@ function Cart() {
                             <option>Standard shipping - $10.00</option>
                         </select>
                     </div> */}
-                    <div className="py-10">
+
+                    <div className="pt-10 pb-5">
                         <label
                             for="promo"
                             className="font-semibold inline-block mb-3 text-sm uppercase"
@@ -193,15 +200,17 @@ function Cart() {
                             placeholder="Nhập mã giảm giá"
                             className="p-2 text-sm w-full"
                         />
+
                     </div>
+                    {dataState?.soTienGiam && <div className='mb-5 mt-1'>Đơn hàng được giảm: {formatCurrency(dataState?.soTienGiam)}</div>}
                     <button onClick={addVoucher} className="bg-red-500 hover:bg-red-600 px-5 py-2 text-sm text-white uppercase">
                         Áp dụng
                     </button>
                     <div className="border-t mt-8">
-                        {/* <div className="flex font-semibold justify-between py-6 text-sm uppercase">
+                        <div className="flex font-semibold justify-between py-6 text-sm uppercase">
                             <span>Thành tiền</span>
-                            <span>$600</span>
-                        </div> */}
+                            <span>{formatCurrency(calculatePrice(listItem) - (dataState?.soTienGiam || 0))} </span>
+                        </div>
                         <button onClick={handleOpenBuy} className=" font-semibold  py-3 text-sm  uppercase w-full bg-[#333] text-white hover:bg-[#222]">
                             Mua
                         </button>

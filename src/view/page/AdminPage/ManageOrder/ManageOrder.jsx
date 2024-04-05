@@ -9,7 +9,7 @@ import ConfirmDialog from '../../../common/ConfirmDialog';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { localization } from '../../../utils/localization';
-import { convertToDate } from '../../../../appFunction';
+import { convertToDate, formatCurrency } from '../../../../appFunction';
 
 function MaterialButton(props) {
     const item = props.item;
@@ -123,7 +123,7 @@ function ManageOrder() {
             width: 190,
             render: (rowData) => rowData?.profile?.fullName
         },
-        { title: 'Thành tiền', field: 'totalFinal', width: 190 },
+        { title: 'Thành tiền', field: 'totalFinal', width: 190, render: (rowData) => formatCurrency(rowData?.totalFinal) },
         { title: 'Loại hình thanh toán', field: 'orderType', width: 290 },
         { title: 'Trạng thái thanh toán', field: 'statusPayment', width: 290 },
     ]

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import DialogConfirm from './DialogConfirm';
-import { convertToDate, getCurrentUser } from '../../../appFunction';
+import { convertToDate, formatCurrency, getCurrentUser } from '../../../appFunction';
 import { confirmRepair, getOrderByProfile } from './ProgressServices';
 
 function Progress() {
@@ -97,13 +97,13 @@ function Progress() {
                                                         <svg className="flex-shrink-0 w-4 h-4 text-blue-700 dark:text-blue-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                                                             <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
                                                         </svg>
-                                                        <span className="text-base font-normal leading-tight text-gray-500 dark:text-gray-400 ms-3">Tổng tiền: {i?.totalPrice} VNĐ</span>
+                                                        <span className="text-base font-normal leading-tight text-gray-500 dark:text-gray-400 ms-3">Tổng tiền: {formatCurrency(i?.totalPrice)}</span>
                                                     </li>
                                                     <li className="flex">
                                                         <svg className="flex-shrink-0 w-4 h-4 text-blue-700 dark:text-blue-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                                                             <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
                                                         </svg>
-                                                        <span className="text-base font-normal leading-tight text-gray-500 dark:text-gray-400 ms-3">Số tiền giảm: {i?.totalDiscount} VNĐ</span>
+                                                        <span className="text-base font-normal leading-tight text-gray-500 dark:text-gray-400 ms-3">Số tiền giảm: {formatCurrency(i?.totalDiscount)}</span>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -121,7 +121,7 @@ function Progress() {
                                                             </svg>
                                                             <div>
                                                                 <span className="font-medium">{`${it?.productName} (${it?.colorName}, ${it?.sizeName})`}</span><br></br>
-                                                                <span className="font-medium">{`Số lượng: ${it?.quantity}. Đơn giá: ${it?.productPrice}. Thành tiền: ${it?.totalPrice}`}</span>
+                                                                <span className="font-medium">{`Số lượng: ${formatCurrency(it?.quantity)}. Đơn giá: ${formatCurrency(it?.productPrice)}. Thành tiền: ${formatCurrency(it?.totalPrice)}`}</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -138,7 +138,7 @@ function Progress() {
                                             Đã nhận được hàng
                                         </button>
                                     </div>}
-                                    <p className="font-semibold text-lg text-black py-6">Tổng tiền: <span className="text-indigo-600"> {i?.totalPrice} VNĐ</span></p>
+                                    <p className="font-semibold text-lg text-black py-6">Thành tiền: <span className="text-indigo-600"> {formatCurrency(i?.totalFinal)}</span></p>
                                 </div>
                             </div>
                         )

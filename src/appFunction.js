@@ -93,3 +93,7 @@ export const getStatusOrder = (name) => {
       return OBJECT_STATUS_ORDER.CHO_NGUOI_DUNG_XAC_NHAN;
   }
 };
+
+export const formatCurrency = (number) => {
+  return (number || 0)?.toLocaleString("vi-VN") + " đ";
+};
